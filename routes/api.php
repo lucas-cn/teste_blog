@@ -22,7 +22,14 @@ Route::middleware('api')->post('/login', 'AuthController@login');
 Route::middleware('api')->post('/registration', 'AuthController@createLogin');
 
 /* --------- Post --------- */
-Route::middleware('api')->get('/post', 'PostsController@get');
+Route::middleware('api')->get('/post', 'PostController@get');
+Route::middleware('api')->post('/post', 'PostController@filter');
+Route::middleware('api')->post('/post/save', 'PostController@save');
+Route::middleware('api')->post('/post/save/{id}', 'PostController@save');
+
+/* --------- Categoria --------- */
+Route::middleware('api')->get('/categoria', 'CategoriaController@get');
+Route::middleware('api')->post('/categoria', 'CategoriaController@save');
 
 Route::post('post/adicionar', function () {
     if(Auth::check()){

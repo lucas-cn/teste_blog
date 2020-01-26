@@ -1935,16 +1935,43 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       search: {
-        "autor": '',
-        "titulo": '',
-        "categoria": ''
+        autor: '',
+        titulo: '',
+        categoria: ''
       },
-      posts: {}
+      posts: [''],
+      page: 1,
+      perPage: 3,
+      pages: []
     };
+  },
+  computed: {
+    displayedPosts: function displayedPosts() {
+      return this.paginate(this.posts);
+    }
   },
   filters: {
     formatDate: function formatDate(date) {
@@ -1963,17 +1990,45 @@ __webpack_require__.r(__webpack_exports__);
       _this.posts = data;
     });
   },
-  watch: {},
+  watch: {
+    posts: function posts() {
+      this.setPages();
+    }
+  },
   methods: {
-    search: function search(_search) {
+    clearfilter: function clearfilter(search) {
+      this.search = {
+        autor: '',
+        titulo: '',
+        categoria: ''
+      };
+      this.filter();
+    },
+    filter: function filter(search) {
       var _this2 = this;
 
       // Posts
-      axios.get("/api/post").then(function (response) {
+      axios.post("/api/post", {
+        search: search
+      }).then(function (response) {
         return response.data;
       }).then(function (data) {
         _this2.posts = data;
       });
+    },
+    setPages: function setPages() {
+      var numberOfPages = Math.ceil(this.posts.length / this.perPage);
+
+      for (var index = 1; index <= numberOfPages; index++) {
+        this.pages.push(index);
+      }
+    },
+    paginate: function paginate(posts) {
+      var page = this.page;
+      var perPage = this.perPage;
+      var from = page * perPage - perPage;
+      var to = page * perPage;
+      return posts.slice(from, to);
     }
   }
 });
@@ -37257,55 +37312,147 @@ var render = function() {
           _c(
             "button",
             {
-              staticClass: "btn btn-outline-secondary",
+              staticClass: "btn btn-outline-primary",
               attrs: { type: "button" },
               on: {
                 click: function($event) {
-                  return _vm.search(_vm.search)
+                  return _vm.filter(_vm.search)
                 }
               }
             },
             [_vm._v("Buscar")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-outline-secondary",
+              attrs: { type: "button" },
+              on: {
+                click: function($event) {
+                  return _vm.clearfilter()
+                }
+              }
+            },
+            [_vm._v("Limpar")]
           )
         ])
       ])
     ]),
     _vm._v(" "),
-    _c(
-      "div",
-      { staticClass: "row justify-content-around" },
-      _vm._l(_vm.posts, function(post, key) {
-        return _c("div", { key: key, staticClass: "card mb-4" }, [
-          _c("div", { staticClass: "card-body" }, [
-            _c("h4", { staticClass: "card-title" }, [
-              _vm._v(_vm._s(post.titulo))
-            ]),
-            _vm._v(" "),
-            _c("p", { staticClass: "card-text" }, [
-              _vm._v(_vm._s(post.conteudo))
-            ]),
-            _vm._v(" "),
-            _c(
-              "a",
-              {
-                staticClass: "btn btn-primary",
-                attrs: { target: "_self", href: "/post/" + post.id }
-              },
-              [_vm._v("Vizualizar")]
-            )
-          ]),
-          _vm._v(" "),
-          _c("footer", { staticClass: "card-footer" }, [
-            _vm._v("\n        Autor: "),
-            _c("em", [_vm._v(_vm._s(post.autor))]),
-            _c("br"),
-            _vm._v("\n        Data: "),
-            _c("em", [_vm._v(_vm._s(_vm._f("formatDate")(post.publicacao)))])
-          ])
+    !_vm.displayedPosts.length
+      ? _c("div", { staticClass: "row justify-content-around" }, [
+          _vm._v("\n    Nenhum resultado foi encontrado.\n  ")
         ])
-      }),
-      0
-    )
+      : _c(
+          "div",
+          { staticClass: "row justify-content-around" },
+          [
+            _vm._l(_vm.displayedPosts, function(post) {
+              return _c("div", { key: post.id, staticClass: "card mb-4" }, [
+                _c("div", { staticClass: "card-body" }, [
+                  _c("h4", { staticClass: "card-title" }, [
+                    _vm._v(_vm._s(post.titulo))
+                  ]),
+                  _vm._v(" "),
+                  _c("p", { staticClass: "card-text" }, [
+                    _vm._v(_vm._s(post.conteudo))
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "a",
+                    {
+                      staticClass: "btn btn-primary",
+                      attrs: { target: "_self", href: "/post/" + post.id }
+                    },
+                    [_vm._v("Vizualizar")]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("footer", { staticClass: "card-footer" }, [
+                  post.category
+                    ? _c("em", [_vm._v(_vm._s(post.category.name) + " | ")])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _c("em", { staticStyle: { color: "#767676" } }, [
+                    _vm._v(
+                      _vm._s(_vm._f("formatDate")(post.publicacao)) + " | "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  post.autor && post.autor.name
+                    ? _c("em", [_vm._v(_vm._s(post.autor.name))])
+                    : _vm._e()
+                ])
+              ])
+            }),
+            _vm._v(" "),
+            _c("nav", { attrs: { "aria-label": "Page navigation example" } }, [
+              _c("ul", { staticClass: "pagination" }, [
+                _c("li", { staticClass: "page-item" }, [
+                  _vm.page != 1
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "page-link",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              _vm.page--
+                            }
+                          }
+                        },
+                        [_vm._v(" Previous ")]
+                      )
+                    : _vm._e()
+                ]),
+                _vm._v(" "),
+                _c(
+                  "li",
+                  { staticClass: "page-item" },
+                  _vm._l(_vm.pages.slice(_vm.page - 1, _vm.page + 5), function(
+                    pageNumber
+                  ) {
+                    return _c(
+                      "button",
+                      {
+                        key: pageNumber,
+                        staticClass: "page-link",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function($event) {
+                            _vm.page = pageNumber
+                          }
+                        }
+                      },
+                      [_vm._v(" " + _vm._s(pageNumber) + " ")]
+                    )
+                  }),
+                  0
+                ),
+                _vm._v(" "),
+                _c("li", { staticClass: "page-item" }, [
+                  _vm.page < _vm.pages.length
+                    ? _c(
+                        "button",
+                        {
+                          staticClass: "page-link",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              _vm.page++
+                            }
+                          }
+                        },
+                        [_vm._v(" Next ")]
+                      )
+                    : _vm._e()
+                ])
+              ])
+            ])
+          ],
+          2
+        )
   ])
 }
 var staticRenderFns = []

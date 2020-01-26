@@ -13,12 +13,17 @@ class Posts extends Migration
             $table->integer('autor');
             $table->string('titulo');
             $table->text('conteudo');
+            $table->unsignedInteger('id_category');
             $table->timestamp('publicacao');
+        });
+
+        Schema::table('posts', function (Blueprint $table) {
+            $table->foreign('id_category')->references('id')->on('categories');    
         });
     }
   
     public function down()
     {
-        Schema::drop('posts');
+        Schema::dropIfExists('posts');
     }
 }

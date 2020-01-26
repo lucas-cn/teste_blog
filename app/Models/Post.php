@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -33,6 +33,21 @@ class Post extends Model
      * @var array
      */
     protected $fillable = [
-        'autor', 'titulo', 'conteudo',
+        'autor', 'titulo', 'conteudo', 'id_category'
     ];
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function category(){
+        return $this->belongsTo('App\Models\Category', 'id_category');
+    }
+
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function autor(){
+        return $this->belongsTo('App\Models\User', 'autor');
+    }
 }

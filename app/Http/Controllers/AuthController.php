@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
  
 use Illuminate\Http\Request;
 use Validator,Redirect,Response;
-Use App\User;
+Use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Session;
