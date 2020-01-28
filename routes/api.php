@@ -26,14 +26,12 @@ Route::middleware('api')->get('/post', 'PostController@get');
 Route::middleware('api')->post('/post', 'PostController@filter');
 Route::middleware('api')->post('/post/save', 'PostController@save');
 Route::middleware('api')->post('/post/save/{id}', 'PostController@save');
+Route::middleware('api')->post('/post/delete', 'PostController@destroy');
+Route::middleware('api')->get('/autor', 'PostController@getAutores');
 
 /* --------- Categoria --------- */
-Route::middleware('api')->get('/categoria', 'CategoriaController@get');
-Route::middleware('api')->post('/categoria', 'CategoriaController@save');
-
-Route::post('post/adicionar', function () {
-    if(Auth::check()){
-        return view('post/add');
-    }
-    return Redirect::to("login")->withSuccess('Acesso restrito');
-});
+Route::middleware('api')->get('/categoria', 'CategoryController@get');
+Route::middleware('api')->post('/categoria', 'CategoryController@filter');
+Route::middleware('api')->post('/categoria/save', 'CategoryController@save');
+Route::middleware('api')->post('/categoria/save/{id}', 'CategoryController@save');
+Route::middleware('api')->post('/categoria/delete', 'CategoryController@destroy');

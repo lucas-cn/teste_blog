@@ -16,17 +16,27 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="/">Blog-teste</a>
-            @if(Auth::check())
-            <a class="btn btn-outline-success my-2 my-sm-0" href="/logout">LOGOUT</a>
-            @else
-            <a class="btn btn-outline-success my-2 my-sm-0" href="/login">LOGIN</a>
-            @endif
+        <nav class="navbar navbar-expand-lg navbar-light bg-light row justify-content-md-center">
+            <div class="collapse navbar-collapse col-md-10 col-lg-6" id="navbarSupportedContent">
+                <a class="navbar-brand" href="/">Blog-teste</a>
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/post/admin">Gerenciar Posts</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/categoria">Gerenciar Categorias</a>
+                    </li>
+                </ul>
+                @if(Auth::check())
+                <a class="btn btn-outline-success my-2 my-lg-0" href="/logout">LOGOUT</a>
+                @else
+                <a class="btn btn-outline-success my-2 my-lg-0" href="/login">LOGIN</a>
+                @endif
+            </div>
         </nav>
         <div class="container-fluid">
             <div class="row justify-content-md-center">
-                <div class="col-md-8 col-lg-6">
+                <div class="col-md-10 col-lg-6">
                 @yield('content')
                 </div>
             </div>

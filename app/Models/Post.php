@@ -18,7 +18,7 @@ class Post extends Model
      *
      * @var bool
      */
-    public $timestamps = true;
+    public $timestamps = false;
     
     /**
      * The name of the "created at" column.
@@ -43,11 +43,22 @@ class Post extends Model
         return $this->belongsTo('App\Models\Category', 'id_category');
     }
 
-    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function autor(){
         return $this->belongsTo('App\Models\User', 'autor');
+    }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function img(){
+        $files = glob(public_path()."/images/".$this->id.".*");
+        if(isset($files[0])){
+            return asset('/images/'.basename($files[0]));    
+        }else{
+            return "";
+        }
     }
 }

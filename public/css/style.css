@@ -93,13 +93,13 @@
     display: inline-block;
   }
   button.page-link {
-      font-size: 20px;
+      font-size: 15px;
       color: #29b3ed;
       font-weight: 500;
   }
   .offset{
     width: 500px !important;
-    margin: 20px auto;  
+    margin: 10px auto;  
   }
 
   /* Fallback for Edge
