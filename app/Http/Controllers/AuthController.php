@@ -48,6 +48,9 @@ class AuthController extends Controller
         $data = $request->all();
  
         $check = $this->create($data);
+
+        $credentials = $request->only('email', 'password');
+        Auth::attempt($credentials);
        
         return Redirect::to("/")->withSuccess('Cadastro efetuado com sucesso!');
     }

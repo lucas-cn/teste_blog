@@ -24,14 +24,14 @@ Route::middleware('api')->post('/registration', 'AuthController@createLogin');
 /* --------- Post --------- */
 Route::middleware('api')->get('/post', 'PostController@get');
 Route::middleware('api')->post('/post', 'PostController@filter');
-Route::middleware('api')->post('/post/save', 'PostController@save');
-Route::middleware('api')->post('/post/save/{id}', 'PostController@save');
-Route::middleware('api')->post('/post/delete', 'PostController@destroy');
-Route::middleware('api')->get('/autor', 'PostController@getAutores');
+Route::middleware('auth:web')->post('/post/save', 'PostController@save');
+Route::middleware('auth:web')->post('/post/save/{id}', 'PostController@save');
+Route::middleware('auth:web')->post('/post/delete', 'PostController@destroy');
+Route::middleware('auth:web')->get('/autor', 'PostController@getAutores');
 
 /* --------- Categoria --------- */
 Route::middleware('api')->get('/categoria', 'CategoryController@get');
-Route::middleware('api')->post('/categoria', 'CategoryController@filter');
-Route::middleware('api')->post('/categoria/save', 'CategoryController@save');
-Route::middleware('api')->post('/categoria/save/{id}', 'CategoryController@save');
-Route::middleware('api')->post('/categoria/delete', 'CategoryController@destroy');
+Route::middleware('auth:web')->post('/categoria', 'CategoryController@filter');
+Route::middleware('auth:web')->post('/categoria/save', 'CategoryController@save');
+Route::middleware('auth:web')->post('/categoria/save/{id}', 'CategoryController@save');
+Route::middleware('auth:web')->post('/categoria/delete', 'CategoryController@destroy');

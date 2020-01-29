@@ -37,7 +37,7 @@
       
     </div>
     <!-- Paginacao -->
-    <nav class="row justify-content-around" aria-label="Page navigation example">
+    <nav v-if="displayedPosts.length" class="row justify-content-around" aria-label="Page navigation example">
       <ul class="pagination">
         <li class="page-item">
           <button type="button" class="page-link" v-if="page != 1" @click="page--"> Previous </button>

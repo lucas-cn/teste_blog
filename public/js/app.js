@@ -11835,6 +11835,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     del: function del(category) {
+      var _this2 = this;
+
       if (confirm("Excluir categoria?")) {
         var index = this.categorias.indexOf(category);
         this.categorias.splice(index, 1);
@@ -11842,7 +11844,11 @@ __webpack_require__.r(__webpack_exports__);
           id: category.id
         }).then(function (response) {
           return response.data;
-        }).then(function (data) {});
+        }).then(function (data) {
+          _this2.pages = [];
+
+          _this2.setPages();
+        });
       }
     },
     edit: function edit(category) {
@@ -12100,6 +12106,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     del: function del(post) {
+      var _this2 = this;
+
       if (confirm("Excluir post?")) {
         var index = this.posts.indexOf(post);
         this.posts.splice(index, 1);
@@ -12107,7 +12115,11 @@ __webpack_require__.r(__webpack_exports__);
           id: post.id
         }).then(function (response) {
           return response.data;
-        }).then(function (data) {});
+        }).then(function (data) {
+          _this2.pages = [];
+
+          _this2.setPages();
+        });
       }
     },
     clearfilter: function clearfilter(search) {
@@ -12119,7 +12131,7 @@ __webpack_require__.r(__webpack_exports__);
       this.filter();
     },
     filter: function filter(search) {
-      var _this2 = this;
+      var _this3 = this;
 
       // Posts
       axios.post("/api/post", {
@@ -12127,9 +12139,9 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         return response.data;
       }).then(function (data) {
-        _this2.posts = data;
-        _this2.pages = [];
-        _this2.page = 1;
+        _this3.posts = data;
+        _this3.pages = [];
+        _this3.page = 1;
       });
     },
     setPages: function setPages() {
@@ -47745,7 +47757,7 @@ var render = function() {
             "button",
             {
               staticClass: "btn btn-primary",
-              attrs: { type: "button" },
+              attrs: { disabled: !_vm.category.nome, type: "button" },
               on: {
                 click: function($event) {
                   return _vm.save()
@@ -47852,143 +47864,149 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    !_vm.displayedPosts.length
-      ? _c("div", { staticClass: "row justify-content-around" }, [
-          _vm._v("\n    Nenhum resultado foi encontrado.\n  ")
-        ])
-      : _c("div", { staticClass: "row justify-content-around" }, [
-          _c("div", { staticClass: "col-8 mb-4" }, [
-            _c("table", { staticClass: "table" }, [
-              _vm._m(0),
-              _vm._v(" "),
-              _c(
-                "tbody",
-                _vm._l(_vm.displayedPosts, function(category) {
-                  return _c("tr", { key: category.id }, [
-                    _c("td", { staticStyle: { width: "70%" } }, [
-                      _c("span", [_vm._v(_vm._s(category.nome))])
-                    ]),
-                    _vm._v(" "),
-                    _c("td", [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-primary btn-sm",
-                          attrs: { type: "button" },
-                          on: {
-                            click: function($event) {
-                              return _vm.edit(category)
-                            }
-                          }
-                        },
-                        [
-                          _c("font-awesome-icon", {
-                            staticClass: "mr-1",
-                            attrs: { icon: "pen" }
-                          }),
-                          _vm._v("Editar")
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-danger btn-sm",
-                          attrs: { type: "button" },
-                          on: {
-                            click: function($event) {
-                              return _vm.del(category)
-                            }
-                          }
-                        },
-                        [
-                          _c("font-awesome-icon", {
-                            staticClass: "mr-1",
-                            attrs: { icon: "trash" }
-                          }),
-                          _vm._v("Excluir")
-                        ],
-                        1
-                      )
-                    ])
-                  ])
-                }),
-                0
-              )
-            ])
-          ])
-        ]),
-    _vm._v(" "),
-    _c(
-      "nav",
-      {
-        staticClass: "row justify-content-around",
-        attrs: { "aria-label": "Page navigation example" }
-      },
-      [
-        _c("ul", { staticClass: "pagination" }, [
-          _c("li", { staticClass: "page-item" }, [
-            _vm.page != 1
-              ? _c(
-                  "button",
-                  {
-                    staticClass: "page-link",
-                    attrs: { type: "button" },
-                    on: {
-                      click: function($event) {
-                        _vm.page--
-                      }
-                    }
-                  },
-                  [_vm._v(" Previous ")]
-                )
-              : _vm._e()
-          ]),
+    _c("div", { staticClass: "row justify-content-around" }, [
+      _c("div", { staticClass: "col-8 mb-4" }, [
+        _c("table", { staticClass: "table" }, [
+          _vm._m(0),
           _vm._v(" "),
           _c(
-            "li",
-            { staticClass: "page-item" },
-            _vm._l(_vm.pages.slice(_vm.page - 1, _vm.page + 5), function(
-              pageNumber
-            ) {
-              return _c(
-                "button",
-                {
-                  staticClass: "page-link",
-                  attrs: { type: "button" },
-                  on: {
-                    click: function($event) {
-                      _vm.page = pageNumber
-                    }
-                  }
-                },
-                [_vm._v(" " + _vm._s(pageNumber) + " ")]
-              )
-            }),
-            0
-          ),
-          _vm._v(" "),
-          _c("li", { staticClass: "page-item" }, [
-            _vm.page < _vm.pages.length
-              ? _c(
-                  "button",
-                  {
-                    staticClass: "page-link",
-                    attrs: { type: "button" },
-                    on: {
-                      click: function($event) {
-                        _vm.page++
-                      }
-                    }
-                  },
-                  [_vm._v(" Next ")]
-                )
-              : _vm._e()
-          ])
+            "tbody",
+            [
+              !_vm.displayedPosts.length
+                ? _c("div", { staticClass: "row justify-content-around" }, [
+                    _vm._v(
+                      "\n            Nenhum resultado foi encontrado.\n          "
+                    )
+                  ])
+                : _vm._l(_vm.displayedPosts, function(category) {
+                    return _c("tr", { key: category.id }, [
+                      _c("td", { staticStyle: { width: "70%" } }, [
+                        _c("span", [_vm._v(_vm._s(category.nome))])
+                      ]),
+                      _vm._v(" "),
+                      _c("td", [
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-primary btn-sm",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function($event) {
+                                return _vm.edit(category)
+                              }
+                            }
+                          },
+                          [
+                            _c("font-awesome-icon", {
+                              staticClass: "mr-1",
+                              attrs: { icon: "pen" }
+                            }),
+                            _vm._v("Editar")
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "button",
+                          {
+                            staticClass: "btn btn-danger btn-sm",
+                            attrs: { type: "button" },
+                            on: {
+                              click: function($event) {
+                                return _vm.del(category)
+                              }
+                            }
+                          },
+                          [
+                            _c("font-awesome-icon", {
+                              staticClass: "mr-1",
+                              attrs: { icon: "trash" }
+                            }),
+                            _vm._v("Excluir")
+                          ],
+                          1
+                        )
+                      ])
+                    ])
+                  })
+            ],
+            2
+          )
         ])
-      ]
-    )
+      ])
+    ]),
+    _vm._v(" "),
+    _vm.displayedPosts.length
+      ? _c(
+          "nav",
+          {
+            staticClass: "row justify-content-around",
+            attrs: { "aria-label": "Page navigation example" }
+          },
+          [
+            _c("ul", { staticClass: "pagination" }, [
+              _c("li", { staticClass: "page-item" }, [
+                _vm.page != 1
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "page-link",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function($event) {
+                            _vm.page--
+                          }
+                        }
+                      },
+                      [_vm._v(" Previous ")]
+                    )
+                  : _vm._e()
+              ]),
+              _vm._v(" "),
+              _c(
+                "li",
+                { staticClass: "page-item" },
+                _vm._l(_vm.pages.slice(_vm.page - 1, _vm.page + 5), function(
+                  pageNumber
+                ) {
+                  return _c(
+                    "button",
+                    {
+                      staticClass: "page-link",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          _vm.page = pageNumber
+                        }
+                      }
+                    },
+                    [_vm._v(" " + _vm._s(pageNumber) + " ")]
+                  )
+                }),
+                0
+              ),
+              _vm._v(" "),
+              _c("li", { staticClass: "page-item" }, [
+                _vm.page < _vm.pages.length
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "page-link",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function($event) {
+                            _vm.page++
+                          }
+                        }
+                      },
+                      [_vm._v(" Next ")]
+                    )
+                  : _vm._e()
+              ])
+            ])
+          ]
+        )
+      : _vm._e()
   ])
 }
 var staticRenderFns = [
@@ -48210,7 +48228,14 @@ var render = function() {
             "button",
             {
               staticClass: "btn btn-primary",
-              attrs: { type: "button" },
+              attrs: {
+                disabled:
+                  !_vm.post.titulo ||
+                  !_vm.post.id_category ||
+                  !_vm.post.autor ||
+                  !_vm.post.conteudo,
+                type: "button"
+              },
               on: {
                 click: function($event) {
                   return _vm.save()
@@ -48377,75 +48402,77 @@ var render = function() {
           0
         ),
     _vm._v(" "),
-    _c(
-      "nav",
-      {
-        staticClass: "row justify-content-around",
-        attrs: { "aria-label": "Page navigation example" }
-      },
-      [
-        _c("ul", { staticClass: "pagination" }, [
-          _c("li", { staticClass: "page-item" }, [
-            _vm.page != 1
-              ? _c(
-                  "button",
-                  {
-                    staticClass: "page-link",
-                    attrs: { type: "button" },
-                    on: {
-                      click: function($event) {
-                        _vm.page--
+    _vm.displayedPosts.length
+      ? _c(
+          "nav",
+          {
+            staticClass: "row justify-content-around",
+            attrs: { "aria-label": "Page navigation example" }
+          },
+          [
+            _c("ul", { staticClass: "pagination" }, [
+              _c("li", { staticClass: "page-item" }, [
+                _vm.page != 1
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "page-link",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function($event) {
+                            _vm.page--
+                          }
+                        }
+                      },
+                      [_vm._v(" Previous ")]
+                    )
+                  : _vm._e()
+              ]),
+              _vm._v(" "),
+              _c(
+                "li",
+                { staticClass: "page-item" },
+                _vm._l(_vm.pages.slice(_vm.page - 1, _vm.page + 5), function(
+                  pageNumber
+                ) {
+                  return _c(
+                    "button",
+                    {
+                      staticClass: "page-link",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          _vm.page = pageNumber
+                        }
                       }
-                    }
-                  },
-                  [_vm._v(" Previous ")]
-                )
-              : _vm._e()
-          ]),
-          _vm._v(" "),
-          _c(
-            "li",
-            { staticClass: "page-item" },
-            _vm._l(_vm.pages.slice(_vm.page - 1, _vm.page + 5), function(
-              pageNumber
-            ) {
-              return _c(
-                "button",
-                {
-                  staticClass: "page-link",
-                  attrs: { type: "button" },
-                  on: {
-                    click: function($event) {
-                      _vm.page = pageNumber
-                    }
-                  }
-                },
-                [_vm._v(" " + _vm._s(pageNumber) + " ")]
-              )
-            }),
-            0
-          ),
-          _vm._v(" "),
-          _c("li", { staticClass: "page-item" }, [
-            _vm.page < _vm.pages.length
-              ? _c(
-                  "button",
-                  {
-                    staticClass: "page-link",
-                    attrs: { type: "button" },
-                    on: {
-                      click: function($event) {
-                        _vm.page++
-                      }
-                    }
-                  },
-                  [_vm._v(" Next ")]
-                )
-              : _vm._e()
-          ])
-        ])
-      ]
-    )
+                    },
+                    [_vm._v(" " + _vm._s(pageNumber) + " ")]
+                  )
+                }),
+                0
+              ),
+              _vm._v(" "),
+              _c("li", { staticClass: "page-item" }, [
+                _vm.page < _vm.pages.length
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "page-link",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function($event) {
+                            _vm.page++
+                          }
+                        }
+                      },
+                      [_vm._v(" Next ")]
+                    )
+                  : _vm._e()
+              ])
+            ])
+          ]
+        )
+      : _vm._e()
   ])
 }
 var staticRenderFns = []
@@ -48852,75 +48879,77 @@ var render = function() {
           0
         ),
     _vm._v(" "),
-    _c(
-      "nav",
-      {
-        staticClass: "row justify-content-around",
-        attrs: { "aria-label": "Page navigation example" }
-      },
-      [
-        _c("ul", { staticClass: "pagination" }, [
-          _c("li", { staticClass: "page-item" }, [
-            _vm.page != 1
-              ? _c(
-                  "button",
-                  {
-                    staticClass: "page-link",
-                    attrs: { type: "button" },
-                    on: {
-                      click: function($event) {
-                        _vm.page--
+    _vm.displayedPosts.length
+      ? _c(
+          "nav",
+          {
+            staticClass: "row justify-content-around",
+            attrs: { "aria-label": "Page navigation example" }
+          },
+          [
+            _c("ul", { staticClass: "pagination" }, [
+              _c("li", { staticClass: "page-item" }, [
+                _vm.page != 1
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "page-link",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function($event) {
+                            _vm.page--
+                          }
+                        }
+                      },
+                      [_vm._v(" Previous ")]
+                    )
+                  : _vm._e()
+              ]),
+              _vm._v(" "),
+              _c(
+                "li",
+                { staticClass: "page-item" },
+                _vm._l(_vm.pages.slice(_vm.page - 1, _vm.page + 5), function(
+                  pageNumber
+                ) {
+                  return _c(
+                    "button",
+                    {
+                      staticClass: "page-link",
+                      attrs: { type: "button" },
+                      on: {
+                        click: function($event) {
+                          _vm.page = pageNumber
+                        }
                       }
-                    }
-                  },
-                  [_vm._v(" Previous ")]
-                )
-              : _vm._e()
-          ]),
-          _vm._v(" "),
-          _c(
-            "li",
-            { staticClass: "page-item" },
-            _vm._l(_vm.pages.slice(_vm.page - 1, _vm.page + 5), function(
-              pageNumber
-            ) {
-              return _c(
-                "button",
-                {
-                  staticClass: "page-link",
-                  attrs: { type: "button" },
-                  on: {
-                    click: function($event) {
-                      _vm.page = pageNumber
-                    }
-                  }
-                },
-                [_vm._v(" " + _vm._s(pageNumber) + " ")]
-              )
-            }),
-            0
-          ),
-          _vm._v(" "),
-          _c("li", { staticClass: "page-item" }, [
-            _vm.page < _vm.pages.length
-              ? _c(
-                  "button",
-                  {
-                    staticClass: "page-link",
-                    attrs: { type: "button" },
-                    on: {
-                      click: function($event) {
-                        _vm.page++
-                      }
-                    }
-                  },
-                  [_vm._v(" Next ")]
-                )
-              : _vm._e()
-          ])
-        ])
-      ]
-    )
+                    },
+                    [_vm._v(" " + _vm._s(pageNumber) + " ")]
+                  )
+                }),
+                0
+              ),
+              _vm._v(" "),
+              _c("li", { staticClass: "page-item" }, [
+                _vm.page < _vm.pages.length
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "page-link",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function($event) {
+                            _vm.page++
+                          }
+                        }
+                      },
+                      [_vm._v(" Next ")]
+                    )
+                  : _vm._e()
+              ])
+            ])
+          ]
+        )
+      : _vm._e()
   ])
 }
 var staticRenderFns = []

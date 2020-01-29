@@ -12,89 +12,62 @@
 */
 
 /* ---------- Login/Registro ---------- */
-Route::get('/', function () {
+/* Route::get('/', function () {
     return view('post/list');
-});
+}); */
 
-Route::get('/login', function () {
-    return view('login');
-});
-
-Route::get('/registration', function () {
-    return view('registration');
-});
-
-Route::get('logout', 'AuthController@logout');
-
-/* ---------- Post ---------- */
-Route::get('post/add', function () {
-    return view('post/add');
-
-    /* if(Auth::check()){
-        return view('post/add');
-    }
-    return Redirect::to("login")->withSuccess('Acesso restrito'); */
-});
-
-Route::get('post/admin', function () {
-    return view('post/admin');
-
-    if(Auth::check()){
-        return view('post/admin');
-    }
-    return Redirect::to("login")->withSuccess('Acesso restrito');
-});
-
-Route::get('post/{id}', function (App\Models\Post $posts, $id) {
-    $data = $posts::where('id', $id)->with('category','autor')->get()->map(function ($post) {
-        $post->img = $post->img();
-        return $post;
+Route::group(['middleware' => ['web']], function () {
+    
+    Route::get('/', function () {
+        return view('post/list');
     });
-    return view('post/view')->with('data', $data[0]); 
+
+    Route::get('/login', ['as' => 'login', function () {
+        return view('login');
+    }]);
     
-    /* if(Auth::check()){
-        return view('post/admin');
-    }
-    return Redirect::to("login")->withSuccess('Acesso restrito'); */
-});
+    Route::get('/registration', function () {
+        return view('registration');
+    });
 
-Route::get('post/edit/{id}', function (App\Models\Post $posts, $id) {
-    return view('post/edit')->with('data', $posts::find($id)); 
-    
-    /* if(Auth::check()){
-        return view('post/admin');
-    }
-    return Redirect::to("login")->withSuccess('Acesso restrito'); */
-});
+    Route::get('logout', 'AuthController@logout');
 
-/* ---------- Categories ---------- */
-Route::get('categoria', function () {
-    return view('category/list');
-});
-
-Route::get('categoria/add', function () {
-    return view('category/add');
-
-    /* if(Auth::check()){
+    /* ---------- Post ---------- */
+    Route::middleware('auth:web')->get('post/add', function () {
         return view('post/add');
-    }
-    return Redirect::to("login")->withSuccess('Acesso restrito'); */
-});
+    });
 
-Route::get('categoria/{id}', function (App\Models\Category $categories, $id) {
-    return view('category/view')->with('data', $categories::find($id));
-    
-    /* if(Auth::check()){
+    Route::middleware('auth:web')->get('post/admin', function () {
         return view('post/admin');
-    }
-    return Redirect::to("login")->withSuccess('Acesso restrito'); */
-});
+    });
 
-Route::get('categoria/edit/{id}', function (App\Models\Category $categories, $id) {
-    return view('category/edit')->with('data', $categories::find($id)); 
-    
-    /* if(Auth::check()){
-        return view('post/admin');
-    }
-    return Redirect::to("login")->withSuccess('Acesso restrito'); */
+    Route::get('post/{id}', function (App\Models\Post $posts, $id) {
+        $data = $posts::where('id', $id)->with('category','autor')->get()->map(function ($post) {
+            $post->img = $post->img();
+            return $post;
+        });
+        return view('post/view')->with('data', $data[0]); 
+    });
+
+    Route::middleware('auth:web')->get('post/edit/{id}', function (App\Models\Post $posts, $id) {
+        return view('post/edit')->with('data', $posts::find($id));
+    });
+
+    /* ---------- Categories ---------- */
+    Route::middleware('auth:web')->get('categoria', function () {
+        return view('category/list');
+    });
+
+    Route::middleware('auth:web')->get('categoria/add', function () {
+        return view('category/add');
+    });
+
+    Route::middleware('auth:web')->get('categoria/{id}', function (App\Models\Category $categories, $id) {
+        return view('category/view')->with('data', $categories::find($id));
+    });
+
+    Route::middleware('auth:web')->get('categoria/edit/{id}', function (App\Models\Category $categories, $id) {
+        return view('category/edit')->with('data', $categories::find($id));
+    });
+
 });

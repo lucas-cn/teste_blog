@@ -20,12 +20,14 @@
             <div class="collapse navbar-collapse col-md-10 col-lg-6" id="navbarSupportedContent">
                 <a class="navbar-brand" href="/">Blog-teste</a>
                 <ul class="navbar-nav mr-auto">
+                    @if(Auth::check())
                     <li class="nav-item">
                         <a class="nav-link" href="/post/admin">Gerenciar Posts</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/categoria">Gerenciar Categorias</a>
                     </li>
+                    @endif
                 </ul>
                 @if(Auth::check())
                 <a class="btn btn-outline-success my-2 my-lg-0" href="/logout">LOGOUT</a>

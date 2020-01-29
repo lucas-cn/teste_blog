@@ -2,10 +2,7 @@
   <div>
     
     <!-- Listagem de Posts -->
-    <div v-if="!displayedPosts.length" class="row justify-content-around">
-      Nenhum resultado foi encontrado.
-    </div>
-    <div v-else class="row justify-content-around">
+    <div class="row justify-content-around">
       <div class="col-8 mb-4">
         
         <table class="table">
@@ -16,7 +13,10 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="category in displayedPosts" v-bind:key="category.id">
+            <div v-if="!displayedPosts.length" class="row justify-content-around">
+              Nenhum resultado foi encontrado.
+            </div>
+            <tr v-else v-for="category in displayedPosts" v-bind:key="category.id">
               <td style="width: 70%;">
                 <span>{{ category.nome }}</span>
               </td>
@@ -31,7 +31,7 @@
       </div>
     </div>
     <!-- Paginacao -->
-    <nav class="row justify-content-around" aria-label="Page navigation example">
+    <nav v-if="displayedPosts.length" class="row justify-content-around" aria-label="Page navigation example">
       <ul class="pagination">
         <li class="page-item">
           <button type="button" class="page-link" v-if="page != 1" @click="page--"> Previous </button>
@@ -83,7 +83,10 @@ export default {
         axios
         .post("/api/categoria/delete", { id: category.id })
         .then(response => response.data)
-        .then(data => {});
+        .then(data => {
+          this.pages = [];
+          this.setPages();
+        });
       }
     },
     edit: function(category) {

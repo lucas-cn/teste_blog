@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Storage;
 use App\Models\Post;
 use App\Models\User;
+use Illuminate\Support\Facades\File;
 
 class PostController extends Controller
 {
@@ -92,6 +93,12 @@ class PostController extends Controller
     {
         $post = Post::findOrFail($request->id);
         $post->delete();
+
+        $files = glob(public_path()."/images/".$request->id.".*");
+        if(isset($files[0]) && File::exists($files[0])){
+            File::delete($files[0]);
+        }
+
         return 'true';
     }
 }

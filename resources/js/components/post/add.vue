@@ -37,7 +37,7 @@
                 <label for="conteudo">Conteúdo</label>
                 <textarea v-model="post.conteudo" class="form-control" id="conteudo" rows="3"></textarea>
             </div>
-            <button type="button" class="btn btn-primary" v-on:click="save()">Salvar</button>
+            <button :disabled="!post.titulo || !post.id_category || !post.autor || !post.conteudo" type="button" class="btn btn-primary" v-on:click="save()">Salvar</button>
         </form>
       </div>
     </div>

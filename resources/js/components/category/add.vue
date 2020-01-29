@@ -7,7 +7,7 @@
                 <label for="titulo">Nome</label>
                 <input id="titulo" v-model="category.nome" type="text" class="form-control">
             </div>
-            <button type="button" class="btn btn-primary" v-on:click="save()">Salvar</button>
+            <button :disabled="!category.nome" type="button" class="btn btn-primary" v-on:click="save()">Salvar</button>
         </form>
       </div>
     </div>
